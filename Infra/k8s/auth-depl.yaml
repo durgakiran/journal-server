@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: journal-auth-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: journal-auth
+  template:
+    metadata:
+      labels:
+        app: journal-auth
+    spec:
+      containers:
+        - name: journal-auth
+          image: durgakiran/journal-auth
+          env:
+            - name: JWT_KEY
+              value: shhh
+---
+# clusterIP service
+apiVersion: v1
+kind: Service
+metadata:
+  name: journal-auth-srv
+spec:
+  selector:
+    app: journal-auth
+  ports:
+    - name: journal-auth
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
+

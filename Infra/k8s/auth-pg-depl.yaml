@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: journal-auth-pg-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: journal-auth-pg
+  template:
+    metadata:
+      labels:
+        app: journal-auth-pg
+    spec:
+      containers:
+        - name: journal-auth-pg
+          image: postgres
+          env:
+            - name: POSTGRES_PASSWORD
+              value: durgakiran
+            - name: POSTGRES_USER
+              value: durgakiran
+            - name: POSTGRES_DB
+              value: users
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: journal-auth-pg-srv
+spec:
+  selector:
+    app: journal-auth-pg
+  ports:
+    - name: journal-auth-pg
+      protocol: TCP
+      port: 5432
+      targetPort: 5432
